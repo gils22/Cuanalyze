@@ -28,7 +28,7 @@ export async function saveProductResult(result: FinalResult): Promise<void> {
       saran: result.saran,
     }
 
-    console.log('📦 Payload ke API:', payload)
+    console.log('Payload ke API:', payload)
     const response = await axios.post(
       'https://cuan-analyze-be.gilangaryatama.workers.dev/cuanalyze/save-check',
       payload,
