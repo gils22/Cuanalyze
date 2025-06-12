@@ -3,7 +3,6 @@
     @submit.prevent="onSubmit"
     class="mx-auto max-w-xl space-y-6 rounded-xl bg-white p-6 shadow"
   >
-    <!-- Informasi UMKM -->
     <div v-if="step === 1" class="space-y-4">
       <h2 class="text-xl font-semibold text-gray-800">Informasi UMKM</h2>
 
@@ -56,17 +55,18 @@
       </div>
     </div>
 
-    <!-- Data Keuangan -->
     <div v-else-if="step === 2" class="space-y-4">
       <h2 class="text-xl font-semibold text-gray-800">Data Keuangan Produk</h2>
 
       <div>
         <label class="mb-1 block text-sm font-medium text-gray-700">Total Pendapatan (Rp)</label>
         <input
-          v-model.number="form.totalPendapatan"
-          type="number"
+          v-model="displayPendapatan"
+          @input="displayPendapatan = formatRupiah(displayPendapatan)"
+          type="text"
+          inputmode="numeric"
           class="focus:ring-primary w-full rounded border border-gray-300 px-4 py-2 focus:ring-2 focus:outline-none"
-          placeholder="Contoh: 10000000"
+          placeholder="Contoh: Rp 10.000.000"
           required
         />
       </div>
@@ -74,10 +74,12 @@
       <div>
         <label class="mb-1 block text-sm font-medium text-gray-700">Profit Bersih (Rp)</label>
         <input
-          v-model.number="form.profit"
-          type="number"
+          v-model="displayProfit"
+          @input="displayProfit = formatRupiah(displayProfit)"
+          type="text"
+          inputmode="numeric"
           class="focus:ring-primary w-full rounded border border-gray-300 px-4 py-2 focus:ring-2 focus:outline-none"
-          placeholder="Contoh: 2500000"
+          placeholder="Contoh: Rp 2.500.000"
           required
         />
       </div>
@@ -112,7 +114,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { supabase } from '@/lib/supabase'
 
 const emit = defineEmits<{
@@ -140,12 +142,34 @@ const form = ref({
   tanggalCek: new Date().toISOString().slice(0, 10),
 })
 
+const displayPendapatan = ref('')
+const displayProfit = ref('')
+
+function formatRupiah(value: number | string): string {
+  const number = typeof value === 'string' ? parseInt(value.replace(/\D/g, '')) : value
+  return 'Rp ' + number.toLocaleString('id-ID')
+}
+
+function unformatRupiah(value: string): number {
+  return parseInt(value.replace(/\D/g, '')) || 0
+}
+
+watch(displayPendapatan, (val) => {
+  form.value.totalPendapatan = unformatRupiah(val)
+})
+watch(displayProfit, (val) => {
+  form.value.profit = unformatRupiah(val)
+})
+
 onMounted(async () => {
   const { data } = await supabase.auth.getUser()
   const email = data.user?.email
   if (email) {
     form.value.namaPemilik = email.split('@')[0]
   }
+
+  displayPendapatan.value = formatRupiah(form.value.totalPendapatan)
+  displayProfit.value = formatRupiah(form.value.profit)
 })
 
 function nextStep() {
