@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cuan-analyze-be",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-06-02",
+  "vars": {
+    "HF_TOKEN": "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",
+    "SUPABASE_URL": "https://bvjslgwocjavhblmqhxz.supabase.co",
+    "SUPABASE_SERVICE_ROLE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2anNsZ3dvY2phdmhibG1xaHh6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTE4NzMxNiwiZXhwIjoyMDY0NzYzMzE2fQ.auE4FL5_mEgTUTxk8T1yRWNNhpFmH4VKv_xt8KSJZaU"
+  }
+}
