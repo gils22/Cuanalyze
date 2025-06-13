@@ -103,24 +103,41 @@
       </div>
     </section>
 
-    <section
-      class="bg-gradient-to-b from-white via-[#FFF7ED] to-[#FFF4E5] py-20"
-      data-aos="fade-up"
-    >
-      <div class="mx-auto max-w-4xl px-4 text-center">
-        <h2 class="mb-4 text-3xl font-bold">Lihat Demo Cuanlyze</h2>
-        <p class="mb-6 text-gray-600">Tonton bagaimana Cuanlyze bekerja secara langsung.</p>
-        <div class="relative mx-auto max-w-3xl">
-          <video ref="videoRef" class="w-full rounded-xl shadow-lg" controls :src="videoSrc" />
+  <section
+    class="bg-gradient-to-b from-white via-[#FFF7ED] to-[#FFF4E5] py-20"
+    data-aos="fade-up"
+  >
+    <div class="mx-auto max-w-4xl px-4 text-center">
+      <h2 class="mb-4 text-3xl font-bold">Lihat Demo Cuanlyze</h2>
+      <p class="mb-6 text-gray-600">Tonton bagaimana Cuanlyze bekerja secara langsung.</p>
+
+      <div class="relative mx-auto aspect-video max-w-3xl overflow-hidden rounded-xl shadow-lg">
+        <template v-if="!isPlaying">
+          <img
+            src="https://img.youtube.com/vi/tcLucoiwULs/hqdefault.jpg"
+            alt="Thumbnail Video"
+            class="absolute left-0 top-0 h-full w-full object-cover"
+          />
           <button
             @click="playVideo"
-            class="bg-opacity-40 hover:bg-opacity-50 absolute inset-0 flex items-center justify-center rounded-xl bg-black text-3xl text-white transition"
+            class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 text-4xl text-white hover:bg-opacity-60"
           >
             ▶
           </button>
-        </div>
+        </template>
+
+        <iframe
+          v-if="isPlaying"
+          class="absolute left-0 top-0 h-full w-full"
+          :src="youtubeEmbedUrl"
+          title="Demo Cuanlyze"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
       </div>
-    </section>
+    </div>
+  </section>
 
     <section class="bg-[#FFF4E5] py-20" data-aos="fade-up">
       <div class="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 px-4 md:grid-cols-2">
@@ -173,7 +190,6 @@
 
     <section class="bg-white py-20" data-aos="fade-up">
       <div class="mx-auto grid max-w-6xl grid-cols-1 items-start gap-12 px-4 md:grid-cols-2">
-        <!-- Left: Form -->
         <div>
           <h2 class="mb-2 text-3xl font-bold">Got a Question For Cuanlyze?</h2>
           <p class="mb-6 text-gray-600">Tanyakan apa pun, kami siap membantu.</p>
@@ -215,10 +231,11 @@ import { ref, onMounted } from 'vue'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 
-const videoSrc = '/videos/demo.mp4'
-const videoRef = ref<HTMLVideoElement | null>(null)
-const playVideo = () => {
-  if (videoRef.value) videoRef.value.play()
+const isPlaying = ref(false)
+const youtubeEmbedUrl = "https://www.youtube.com/embed/tcLucoiwULs?autoplay=1"
+
+function playVideo() {
+  isPlaying.value = true
 }
 
 const testimonials = [
